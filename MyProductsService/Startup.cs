@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProductsBusinessLayer;
+using ProductsBusinessLayer.AutService;
 using ProductsBusinessLayer.MapperProfile;
+using ProductsCore.Options;
 using ProductsDataLayer;
 using System;
 using System.Collections.Generic;
@@ -20,10 +23,10 @@ namespace MyProductsService
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; }
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
 
@@ -31,15 +34,34 @@ namespace MyProductsService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EFCoreContext>(options =>
-            options.UseSqlServer(_configuration["ConnectionStrings:Default"]));
+            options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
             var assamblies = new[]
             {
                 Assembly.GetAssembly(typeof(ProductsProfile))
             };
+            var authOptions = Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
+            services.Configure<AuthOptions>(Configuration.GetSection(nameof(AuthOptions)));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                        {                            
+                            ValidateIssuer = true,                           
+                            ValidIssuer = authOptions.Issuer,
+                            ValidateAudience = true,                         
+                            ValidAudience = authOptions.Audience,                         
+                            ValidateLifetime = true,
+                            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(authOptions.SecretKey)),                        
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
+          
+            services.AddControllersWithViews();
             services.AddAutoMapper(assamblies);
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IProductsReposirory, ProductsRepositoryDb>();
-
+            services.AddScoped<IAuthService, AuthService>();
             services.AddControllers();
         }
 
@@ -54,7 +76,8 @@ namespace MyProductsService
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthorization();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
