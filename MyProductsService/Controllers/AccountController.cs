@@ -50,8 +50,12 @@ namespace MyProductsService.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginInfo loginInfo)
         {
-            
-            return Ok(_authService.Login(loginInfo));
+            var tokken = await _authService.LoginAsync(loginInfo);
+            if(!string.IsNullOrEmpty(tokken))
+            {
+              return Ok(await _authService.LoginAsync(loginInfo));
+            }
+            return BadRequest("Invlid usernme or password" );
 
         }
 

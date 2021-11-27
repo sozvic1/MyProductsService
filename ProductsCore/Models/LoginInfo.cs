@@ -1,5 +1,7 @@
-﻿namespace MyProductsService.Controllers
+﻿
+namespace MyProductsService.Controllers
 {
+
     public class LoginInfo
     {
         public string Login { get; set; }

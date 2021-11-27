@@ -56,7 +56,7 @@ namespace MyProductsService
                             ValidateIssuerSigningKey = true,
                         };
                     });
-          
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
             services.AddAutoMapper(assamblies);
             services.AddScoped<IProductsService, ProductsService>();
