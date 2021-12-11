@@ -2,17 +2,18 @@
 using ProductsBusinessLayer.DTOs;
 using ProductsCore.Models;
 using ProductsDataLayer;
+using ProductsDataLayer.Repository.ProductRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ProductsBusinessLayer
+namespace ProductsBusinessLayer.Services.ProductService
 {
-    public class ProductsService : IProductsService
+    public class ProductService : IProductService
     {
-        private readonly  IProductsReposirory _productsRepository;
+        private readonly  IProductReposirory _productsRepository;
         private readonly IMapper _mapper;
-        public ProductsService(IProductsReposirory productsRepository,IMapper mapper)
+        public ProductService(IProductReposirory productsRepository,IMapper mapper)
         {
             _productsRepository = productsRepository;
             _mapper = mapper;
@@ -38,8 +39,7 @@ namespace ProductsBusinessLayer
         }
 
         public async Task<Guid> CreateProduct(ProductDTO productDTO)
-        {
-            await Task.CompletedTask;
+        {          
 
             var product = _mapper.Map<Product>(productDTO);
 
@@ -49,7 +49,7 @@ namespace ProductsBusinessLayer
 
         public async Task<Product> UpdateProduct(Guid id, ProductDTO productDTO)
         {
-            await Task.CompletedTask;
+            
             var product = _mapper.Map<Product>(productDTO);
             product.Id = id;
 

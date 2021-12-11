@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ProductsDataLayer
+namespace ProductsDataLayer.Repository.ProductRepository
 {
-    public interface IProductsReposirory
+    public interface IProductReposirory
     {
         Task<Guid> Create(Product product);
         Task<Product> DeleteById(Guid id);

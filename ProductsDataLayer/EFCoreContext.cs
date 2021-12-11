@@ -6,8 +6,7 @@ using System;
 namespace ProductsDataLayer
 {
     public class EFCoreContext:DbContext
-    {
-        public DbSet<CategoryDb> Categories { get; set; }
+    {       
         public DbSet<Product> Products { get; set; }
         public DbSet<AccountInfo> Users { get; set; }
         public EFCoreContext(DbContextOptions<EFCoreContext>options):base(options)

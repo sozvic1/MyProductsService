@@ -11,8 +11,13 @@ using Microsoft.Extensions.Logging;
 using ProductsBusinessLayer;
 using ProductsBusinessLayer.AutService;
 using ProductsBusinessLayer.MapperProfile;
+using ProductsBusinessLayer.Services.HashService;
+using ProductsBusinessLayer.Services.ProductService;
+using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Options;
 using ProductsDataLayer;
+using ProductsDataLayer.Repository.ProductRepository;
+using ProductsDataLayer.Repository.UserRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +61,17 @@ namespace MyProductsService
                             ValidateIssuerSigningKey = true,
                         };
                     });
+            services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
             services.AddAutoMapper(assamblies);
-            services.AddScoped<IProductsService, ProductsService>();
-            services.AddScoped<IProductsReposirory, ProductsRepositoryDb>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductReposirory, ProductRepositoryDb>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddControllers();
+            services.AddHttpContextAccessor();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

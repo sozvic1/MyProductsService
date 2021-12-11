@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductsBusinessLayer;
 using ProductsBusinessLayer.DTOs;
+using ProductsBusinessLayer.Services.ProductService;
 using ProductsCore.Models;
 using System;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace MyProductsService.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private static IProductsService _productsService;
+        private static IProductService _productsService;
 
-        public ProductsController(IProductsService productsService)
+        public ProductsController(IProductService productsService)
         {
             _productsService =  productsService;
         }

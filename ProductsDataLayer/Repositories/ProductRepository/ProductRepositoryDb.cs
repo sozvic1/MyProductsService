@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductsDataLayer
+namespace ProductsDataLayer.Repository.ProductRepository
 {
-    public class ProductsRepositoryDb : IProductsReposirory
+    public class ProductRepositoryDb : IProductReposirory
     {
         private readonly EFCoreContext _dbContext;
-        public ProductsRepositoryDb(EFCoreContext dbContext)
+        public ProductRepositoryDb(EFCoreContext dbContext)
         {
             _dbContext = dbContext;
         }

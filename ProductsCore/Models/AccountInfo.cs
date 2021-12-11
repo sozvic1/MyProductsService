@@ -12,6 +12,6 @@ namespace ProductsCore.Models
         public string LastName { get; set; }
         [Column("RoleId")]
         public Role Role { get; set; }
-        public bool Isctive { get; set; }
+        public bool Isactive { get; set; }
     }
 }
