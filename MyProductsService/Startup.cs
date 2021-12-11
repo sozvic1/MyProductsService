@@ -13,9 +13,12 @@ using ProductsBusinessLayer.AutService;
 using ProductsBusinessLayer.MapperProfile;
 using ProductsBusinessLayer.Services.HashService;
 using ProductsBusinessLayer.Services.ProductService;
+using ProductsBusinessLayer.Services.RegistrationService;
+using ProductsBusinessLayer.Services.SmtpService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Options;
 using ProductsDataLayer;
+using ProductsDataLayer.Repositories.EmailRepository;
 using ProductsDataLayer.Repository.ProductRepository;
 using ProductsDataLayer.Repository.UserRepository;
 using System;
@@ -46,6 +49,7 @@ namespace MyProductsService
             };
             var authOptions = Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
             services.Configure<AuthOptions>(Configuration.GetSection(nameof(AuthOptions)));
+            services.Configure<SmtpOptions>(Configuration.GetSection(nameof(SmtpOptions)));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -64,9 +68,12 @@ namespace MyProductsService
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISmtpService, SmtpService>();
             services.AddControllersWithViews();
             services.AddAutoMapper(assamblies);
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IProductReposirory, ProductRepositoryDb>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddControllers();

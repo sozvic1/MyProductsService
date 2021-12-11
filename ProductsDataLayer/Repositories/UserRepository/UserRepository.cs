@@ -16,6 +16,14 @@ namespace ProductsDataLayer.Repository.UserRepository
         {
             _dbContext = dbContext;
         }
+        public async Task<Guid>AddUserAsync(AccountInfo accountInfo)
+        {
+            accountInfo.Id = Guid.NewGuid();
+            _dbContext.Users.Add(accountInfo);
+            var result =    await _dbContext.SaveChangesAsync();
+
+            return result!=0 ?accountInfo.Id:Guid.Empty;
+        }
         public async Task<Role?> GetRoleByLoginInfoAsync(LoginInfo loginInfo)
         {
             var account = await GetAccountInfoByLoginInfoAsync(loginInfo);

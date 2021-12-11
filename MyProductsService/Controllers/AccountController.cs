@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProductsBusinessLayer.AutService;
+using ProductsBusinessLayer.DTOs;
+using ProductsBusinessLayer.Services.RegistrationService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Models;
 using ProductsCore.Models.Requests;
@@ -21,13 +23,16 @@ namespace MyProductsService.Controllers
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly ILogger<AccountController> _logger;
+        private readonly IRegistrationService _registrationService;
         public AccountController(IAuthService authService,
             IUserService userService,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IRegistrationService registrationService)
         {
             _authService = authService;
             _userService = userService;
             _logger = logger;
+            _registrationService = registrationService;
         }
 
         [HttpPost("manager")]
@@ -89,10 +94,9 @@ namespace MyProductsService.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AccountInfo accountInfo)
+        public async Task<IActionResult> Register(AccountInfoDTO accountInfo)
         {
-            await Task.CompletedTask;
-            return Ok();
+          return Ok(await _registrationService.RegisterUser(accountInfo));
         }
     }
 }

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace ProductsCore.Options
 {
-    class SmtpOptions
+    public class SmtpOptions
     {
+        public string SenderMail { get; set; }
+        public string SenderPassword { get; set; }
+        public string SenderName { get; set; }
     }
 }
