@@ -96,7 +96,15 @@ namespace MyProductsService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(AccountInfoDTO accountInfo)
         {
-          return Ok(await _registrationService.RegisterUser(accountInfo));
+          return Ok(await _registrationService.RegisterUserAsync(accountInfo, Request.Scheme + "://" + Request.Host));
         }
+
+        [HttpGet("confirm")]
+        public async Task<IActionResult>ConfirmUserEmail(string email,string message)
+        {
+          return  Ok(await _registrationService.ConfirmEmailAsync(email, message));
+        }
+
+        
     }
 }

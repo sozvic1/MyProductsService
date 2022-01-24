@@ -65,6 +65,7 @@ namespace MyProductsService
                             ValidateIssuerSigningKey = true,
                         };
                     });
+            services.AddSignalR();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -99,7 +100,10 @@ namespace MyProductsService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
+              
             });
+          
         }
     }
 }
